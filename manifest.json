@@ -1,9 +1,21 @@
 {
   "name": "Guardian News",
-  "short_name": "guardian",
-  "start_url": "index.html",
+  "short_name": "Guardian",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#fdfdfd",
   "theme_color": "#db4938",
-  "orientation": "portrait-primary"
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/images/guardicon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/images/guardicon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ]
 }

@@ -1,5 +1,8 @@
+// import api_key from '../.env/api_key';  // not possible
+
 (function() {
   //alert('running')
+  const api_key = '47d6b6aa-82d9-4f53-aeaa-f41b1c1f4800';
   console.log('document: ', document);
   const nav = $('nav');
   const container = $('.container');
@@ -65,7 +68,7 @@
       "class": "cont-inner"
     }
     const contInner = addChild(container, "div", "", atts);
-    fetch(`https://content.guardianapis.com/search?api-key=47d6b6aa-82d9-4f53-aeaa-f41b1c1f4800&type=article&page-size=20&page=${page}&${sections}show-fields=trailText,thumbnail`)
+    fetch(`https://content.guardianapis.com/search?api-key=${api_key}&type=article&page-size=20&page=${page}&${sections}show-fields=trailText,thumbnail`)
     .then(response => {
       return response.json()})
     .then(data => {
@@ -135,5 +138,15 @@
     parent.appendChild(childNode);
     return childNode;
   }
-   //.then(data => console.log(data.response.results.forEach(e => e.webTitle)))
 })()
+
+if('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/serviceWorker.js')
+  .then(function(registration) {
+    console.log("Service Worker Registered", registration);
+})
+.catch(function(err) {
+    console.log("Service Worker Failed to Register", err);
+})
+  ;
+};
