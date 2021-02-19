@@ -6,7 +6,8 @@ const appShellFiles = [
   '/css/style.css',
   '/js/app.js',
   '/images/guardicon-192.png',
-  '/images/guardicon-512.png'
+  '/images/guardicon-512.png',
+  '/images/menu.svg'
 ]
 
 self.addEventListener('install', installEvent => {

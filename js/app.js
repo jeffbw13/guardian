@@ -3,12 +3,13 @@
 (function() {
   //alert('running')
   const api_key = '47d6b6aa-82d9-4f53-aeaa-f41b1c1f4800';
-  console.log('document: ', document);
-  const nav = $('nav');
   const container = $('.container');
+  const nav = $('nav');
   nav.addEventListener('click', clickedNav);
   const pagination = $('.pagination');
   pagination.addEventListener('click', clickedPag);
+  const menuIcon = $('.menu-icon');
+  menuIcon.addEventListener('click', clickedMenuIcon);
   let sections = '';
   let page = 1;
 
@@ -44,15 +45,22 @@
         break;
       default:
     }
+    ul = nav.querySelector('ul');
+    ul.className = "nav-ul-horiz";
+
     getPage(1, sections);
-    //alert(e.target.childNodes[0].nodeValue);
   }
 
   function clickedPag(e) {
     const page = e.target.childNodes[0].nodeValue;
     //alert(page);
     getPage(page, sections);
+  }
 
+
+  function clickedMenuIcon(e) {
+    ul = nav.querySelector('ul');
+    ul.className = "nav-ul-vert"
   }
 
   function getPage(page, sections="") {
