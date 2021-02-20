@@ -1,16 +1,16 @@
 // import api_key from '../.env/api_key';  // not possible
 
-(function() {
+(function () {
   //alert('running')
-  const api_key = '47d6b6aa-82d9-4f53-aeaa-f41b1c1f4800';
-  const container = $('.container');
-  const nav = $('nav');
-  nav.addEventListener('click', clickedNav);
-  const pagination = $('.pagination');
-  pagination.addEventListener('click', clickedPag);
-  const menuIcon = $('.menu-icon');
-  menuIcon.addEventListener('click', clickedMenuIcon);
-  let sections = '';
+  const api_key = "47d6b6aa-82d9-4f53-aeaa-f41b1c1f4800";
+  const container = $(".container");
+  const nav = $("nav");
+  nav.addEventListener("click", clickedNav);
+  const pagination = $(".pagination");
+  pagination.addEventListener("click", clickedPag);
+  const menuIcon = $(".menu-icon");
+  menuIcon.addEventListener("click", clickedMenuIcon);
+  let sections = "";
   let page = 1;
 
   //console.log('container: ', container);
@@ -21,31 +21,31 @@
   }
 
   function clickedNav(e) {
-    //console.log("event: ", e.target);
-    //console.log("event: ", e.target.childNodes[0]);
+    console.log("event: ", e.target);
+    console.log("event: ", e.target.childNodes[0]);
     sections = "";
     const option = e.target.childNodes[0].nodeValue;
     switch (option) {
-      case 'All':
+      case "All":
         break;
-      case 'U.S. News':
-        sections = `section=us-news&`
+      case "U.S. News":
+        sections = `section=us-news&`;
         break;
-      case 'World News':
-        sections = `section=world&`
+      case "World News":
+        sections = `section=world&`;
         break;
-      case 'Sports':
-        sections = `section=sport&`
+      case "Sports":
+        sections = `section=sport&`;
         break;
-      case 'Environment':
-        sections = `section=environment&`
+      case "Environment":
+        sections = `section=environment&`;
         break;
-      case 'Books':
-        sections = `section=books&`
+      case "Books":
+        sections = `section=books&`;
         break;
       default:
     }
-    ul = nav.querySelector('ul');
+    ul = nav.querySelector("ul");
     ul.className = "nav-ul-horiz";
 
     getPage(1, sections);
@@ -57,13 +57,17 @@
     getPage(page, sections);
   }
 
-
   function clickedMenuIcon(e) {
-    ul = nav.querySelector('ul');
-    ul.className = "nav-ul-vert"
+    e.stopPropagation();
+    ul = nav.querySelector("ul");
+    if (ul.className === "nav-ul-horiz") {
+      ul.className = "nav-ul-vert";
+    } else {
+      ul.className = "nav-ul-horiz";
+    }
   }
 
-  function getPage(page, sections="") {
+  function getPage(page, sections = "") {
     //alert(sections);
     while (container.firstChild) {
       container.removeChild(container.firstChild);
@@ -73,56 +77,75 @@
       pagination.removeChild(pagination.firstChild);
     }
     let atts = {
-      "class": "cont-inner"
-    }
+      class: "cont-inner",
+    };
     const contInner = addChild(container, "div", "", atts);
-    fetch(`https://content.guardianapis.com/search?api-key=${api_key}&type=article&page-size=20&page=${page}&${sections}show-fields=trailText,thumbnail`)
-    .then(response => {
-      return response.json()})
-    .then(data => {
-          console.log(JSON.stringify(data, null, 2));
+    fetch(
+      `https://content.guardianapis.com/search?api-key=${api_key}&type=article&page-size=20&page=${page}&${sections}show-fields=trailText,thumbnail`
+    )
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        stories = data.response.results;
+        stories.forEach((s) => {
+          let atts = {
+            class: "card",
+          };
+          const story = addChild(contInner, "div", "", atts);
+          atts = {
+            src: s.fields.thumbnail,
+            class: "card--avatar",
+          };
+          const img = addChild(story, "img", "", atts);
+          atts = {
+            class: "card--title",
+            href: s.webUrl,
+          };
+          const head = addChild(story, "a", "", atts);
+          head.innerHTML = s.webTitle;
+          atts = {
+            class: "card--text",
+          };
+          const teaser = addChild(story, "p", "", atts);
+          teaser.innerHTML = s.fields.trailText;
+        });
 
-          stories = data.response.results;
-          stories.forEach(s => {console.log(s.fields.thumbnail)
-            let atts = {
-              "class": "card"
-            }
-            const story = addChild(contInner, "div","",atts);
-            atts = {
-              "src": s.fields.thumbnail,
-              "class": "card--avatar",
-            };
-            const img = addChild(story, "img","",atts);
-            atts = {
-              "class": "card--title",
-              "href": s.webUrl
-            }
-            const head = addChild(story, "a","",atts);
-            head.innerHTML = s.webTitle;
-            atts = {
-              "class": "card--text"
-            }
-            const teaser = addChild(story, "p","",atts);
-            teaser.innerHTML = s.fields.trailText;
-          });
-          pag(page);
-    })
+        pag(page);
+      })
+      .catch((err) => {
+        console.log("blah, blah");
+        atts = {
+          class: "card--title",
+        };
+        const teaser = addChild(contInner, "p", "", atts);
+        teaser.innerHTML = "No connection to server";
+      });
+    // .catch((e) => {
+    //   //  service interrupted
+    //   let atts = {
+    //     class: "card",
+    //   };
+    //   const story = addChild(contInner, "div", "", atts);
+    //   atts = {
+    //     class: "card--text",
+    //   };
+    //   const teaser = addChild(story, "p", "", atts);
+    //   teaser.innerHTML = "Service interrupted";
+    // });
   }
 
   function pag(page) {
     //  page should be in middle of pagination if possible
-    // while (pagination.firstChild) {
-    //   pagination.removeChild(pagination.firstChild);
-    // }
     let atts = {
-      "class": "pag-inner"
-    }
+      class: "pag-inner",
+    };
     let pagInner = addChild(pagination, "div", "", atts);
-    const start = page-4>0?page-4:1
-    for (let x = start; x <= start+8; x++) {
+    const start = page - 4 > 0 ? page - 4 : 1;
+    for (let x = start; x <= start + 8; x++) {
       let atts = {
-        "class": "pag"
-      }
+        class: "pag",
+      };
       let pag = addChild(pagInner, "div", "", atts);
       pag.innerHTML = x;
     }
@@ -140,21 +163,21 @@
     }
     if (attributes) {
       for (var att in attributes) {
-        childNode.setAttribute(att,attributes[att]);
+        childNode.setAttribute(att, attributes[att]);
       }
     }
     parent.appendChild(childNode);
     return childNode;
   }
-})()
+})();
 
-if('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/serviceWorker.js')
-  .then(function(registration) {
-    console.log("Service Worker Registered", registration);
-})
-.catch(function(err) {
-    console.log("Service Worker Failed to Register", err);
-})
-  ;
-};
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker
+    .register("/serviceWorker.js")
+    .then(function (registration) {
+      console.log("Service Worker Registered", registration);
+    })
+    .catch(function (err) {
+      console.log("Service Worker Failed to Register", err);
+    });
+}
