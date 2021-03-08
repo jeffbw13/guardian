@@ -1,7 +1,5 @@
-// import api_key from '../.env/api_key';  // not possible
-
 (function () {
-  //alert('running')
+  //  not all that halal
   const api_key = "47d6b6aa-82d9-4f53-aeaa-f41b1c1f4800";
   const container = $(".container");
   const nav = $("nav");
@@ -13,7 +11,10 @@
   let sections = "";
   let page = 1;
 
-  //console.log('container: ', container);
+  //  set initial active menu item
+  const ul = nav.querySelector("ul");
+  ul.childNodes[1].className = "active";
+
   getPage(1);
 
   function $(selector, context) {
@@ -21,9 +22,13 @@
   }
 
   function clickedNav(e) {
-    console.log("event: ", e.target);
-    console.log("event: ", e.target.childNodes[0]);
+    //  remove "active" class from all menu items
+    e.target.parentNode.childNodes.forEach((c) => {
+      console.log(c);
+      c.className = "";
+    });
     sections = "";
+    e.target.className += "active";
     const option = e.target.childNodes[0].nodeValue;
     switch (option) {
       case "All":
@@ -53,7 +58,6 @@
 
   function clickedPag(e) {
     const page = e.target.childNodes[0].nodeValue;
-    //alert(page);
     getPage(page, sections);
   }
 
@@ -68,7 +72,6 @@
   }
 
   function getPage(page, sections = "") {
-    //alert(sections);
     while (container.firstChild) {
       container.removeChild(container.firstChild);
     }
@@ -121,18 +124,6 @@
         const teaser = addChild(contInner, "p", "", atts);
         teaser.innerHTML = "No connection to server";
       });
-    // .catch((e) => {
-    //   //  service interrupted
-    //   let atts = {
-    //     class: "card",
-    //   };
-    //   const story = addChild(contInner, "div", "", atts);
-    //   atts = {
-    //     class: "card--text",
-    //   };
-    //   const teaser = addChild(story, "p", "", atts);
-    //   teaser.innerHTML = "Service interrupted";
-    // });
   }
 
   function pag(page) {

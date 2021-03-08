@@ -28,7 +28,11 @@ nav ul {
 nav ul li {
   vertical-align: baseline;
 }
-nav ul li:hover {
+nav ul li:hover,
+nav ul li .active {
+  font-style: italic;
+}
+.active {
   font-style: italic;
 }
 nav select {
@@ -47,7 +51,7 @@ nav select {
   width: 250px;
   padding: 10px;
   background-color: white;
-  border: .5px solid black
+  border: 0.5px solid black;
 }
 .menu-icon {
   display: none;
@@ -89,7 +93,7 @@ nav select {
   text-decoration: none;
   font-size: 1rem;
   line-height: 1.1rem;
-  margin: .1rem 0.3rem;
+  margin: 0.1rem 0.3rem;
 }
 .card--title:hover {
   text-decoration: underline;
@@ -97,9 +101,9 @@ nav select {
 .card--text {
   color: #222;
   font-weight: 300;
-  font-size: .9rem;
-  line-height: .9rem;
-  margin: .2rem 0.3rem;
+  font-size: 0.9rem;
+  line-height: 0.9rem;
+  margin: 0.2rem 0.3rem;
 }
 .card--link {
   text-decoration: none;
