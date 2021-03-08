@@ -12,7 +12,7 @@
   let page = 1;
 
   //  set initial active menu item
-  const ul = nav.querySelector("ul");
+  let ul = nav.querySelector("ul");
   ul.childNodes[1].className = "active";
 
   getPage(1);
@@ -24,7 +24,6 @@
   function clickedNav(e) {
     //  remove "active" class from all menu items
     e.target.parentNode.childNodes.forEach((c) => {
-      console.log(c);
       c.className = "";
     });
     sections = "";
