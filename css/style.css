@@ -31,6 +31,7 @@ nav ul li {
 nav ul li:hover,
 nav ul li .active {
   font-style: italic;
+  cursor: pointer;
 }
 .active {
   font-style: italic;
@@ -129,11 +130,11 @@ nav select {
   background-color: red;
   border-radius: 1rem;
 }
+.pag:hover {
+  cursor: pointer;
+}
 
 @media only screen and (max-width: 600px) {
-  /* nav ul {
-    display: none;
-  } */
   .nav-ul-horiz {
     display: none;
   }
